@@ -61,3 +61,21 @@ class MixTwo(models.Model):
 
     def __str__(self):
         return f'Имя обьекта - {self.named}, который создан - {self.named.date}, и имеет абстракцию - {self.named.abs}'
+
+
+#Две абстракции
+
+class AbsX(models.Model):
+    namex = models.CharField(max_length=10, default='XXX')
+    class Meta:
+        abstract = True
+
+class AbsY(models.Model):
+    namey = models.CharField(max_length=10, default='YYY')
+    class Meta:
+        abstract = True
+
+class AbsSum(AbsX,AbsY):
+    date = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return f'Имя первой абстракции - {self.namex}, Имя второй абстракции - {self.namey}, дата создания - {self.date}'
