@@ -79,3 +79,21 @@ class AbsSum(AbsX,AbsY):
     date = models.DateTimeField(auto_now=True)
     def __str__(self):
         return f'Имя первой абстракции - {self.namex}, Имя второй абстракции - {self.namey}, дата создания - {self.date}'
+
+#Абстракт с методом
+
+class AbsMethod(models.Model):
+    named = models.CharField(max_length=50, default='Name AbsMethod class')
+
+    def show(self):
+        return print(self.named, '  some abstract text')
+    class Meta:
+        abstract = True
+
+class AbsMethodExample(AbsMethod):
+
+    name = models.CharField(max_length=50)
+    date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'Имя обьекта - {self.name}, который создан - {self.date}, и имеет абстракцию - {self.named}'
