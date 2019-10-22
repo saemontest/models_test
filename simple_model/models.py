@@ -97,3 +97,50 @@ class AbsMethodExample(AbsMethod):
 
     def __str__(self):
         return f'Имя обьекта - {self.name}, который создан - {self.date}, и имеет абстракцию - {self.named}'
+
+
+# JSON in models
+
+
+from django.db import models
+from django.contrib.postgres.fields import JSONField
+
+
+class BookExample(models.Model):
+    id = models.BigAutoField(primary_key=True, editable=False)
+    name = models.CharField(max_length=100)
+    detail_text = models.TextField()
+    detail_json = JSONField(default=None)  # requires Django-Mysql package
+
+    class Meta:
+        managed = True
+        db_table = 'book_example'
+        verbose_name = 'Book Example'
+        verbose_name_plural = 'Book Examples'
+
+
+
+#Отношения многие-к-одному
+'''
+
+   1  Сколько объектов из B могут относится к объекту A?
+   2  Сколько объектов из A могут относиться к объекту из B?
+
+Если на первый вопрос ответ - множество, а на второй - один (или возможно, что ни одного), то вы имеете дело со связью один-ко-многим.
+
+'''
+
+class MovieHouse(models.Model):
+    cinema_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f'Кинотеатр - {self.cinema_name}'
+
+class Screens(models.Model):
+    type_screen = models.CharField(max_length=50)
+    seats = models.IntegerField()
+    cost = models.DecimalField(max_digits=6, decimal_places=2)
+    place = models.ForeignKey(MovieHouse, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Экран - {self.type_screen}, имеет {self.seats} мест, находится в {self.place.cinema_name} и стоимость посещения {self.cost} гривен'
